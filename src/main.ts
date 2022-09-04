@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -7,7 +8,11 @@ async function bootstrap() {
 
   app.setGlobalPrefix("/api/v1");
 
-  await app.listen(process.env.HTTP_PORT);
+  const configService = app.get(ConfigService);
+
+  const port = configService.get<number>('port');
+
+  await app.listen(port);
 
 }
 
