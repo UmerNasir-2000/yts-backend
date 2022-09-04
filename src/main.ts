@@ -7,7 +7,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix("/api/v1");
 
-  await app.listen(34571);
+  await app.listen(process.env.HTTP_PORT);
 
 }
 
