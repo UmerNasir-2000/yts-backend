@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
-import { DatabaseEngine } from "src/utilities/types/database-engine.type";
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -12,7 +11,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
 
     const connectionOptions: TypeOrmModuleOptions = {
 
-        type: this.configService.get<DatabaseEngine>('database.engine'),
+        type: 'mysql',
         host: this.configService.get<string>('database.host'),
         port: this.configService.get<number>('database.port'),
         username: this.configService.get<string>('database.user'),

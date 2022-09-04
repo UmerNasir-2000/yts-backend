@@ -13,7 +13,7 @@ import { TypeOrmConfigService } from './services/database/database.service';
       isGlobal: true,
       load: [configuration],
       expandVariables: true,
-      envFilePath: 'envs/.local.env'
+      envFilePath: `envs/.${process.env.NODE_ENV}.env`
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService
