@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS `users_favourites`;
 DROP TABLE IF EXISTS `requests`;
 DROP TABLE IF EXISTS `public_logs`;
 DROP TABLE IF EXISTS `download_details`;
+DROP TABLE IF EXISTS `cinematics_images`;
 
 # A director can direct many movies but a movie will have a single director. One To Many
 
@@ -67,6 +68,14 @@ CREATE TABLE IF NOT EXISTS `cinematics` (
      FOREIGN KEY (`director_id`) REFERENCES artists(`id`),
      PRIMARY KEY (`id`),
      UNIQUE KEY `title_year_index` (`title`, `released_year`)
+);
+
+CREATE TABLE IF NOT EXISTS `cinematics_images` (
+    `id` INT AUTO_INCREMENT,
+    `image_path` TEXT NOT NULL,
+    `cinematic_id` INT NOT NULL,
+     FOREIGN KEY (`cinematic_id`) REFERENCES cinematics(`id`),
+     PRIMARY KEY (`id`),
 );
 
 # A movie can have multiple torrents. 
