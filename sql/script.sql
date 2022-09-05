@@ -4,12 +4,14 @@ USE `sql_yts`;
 
 DROP TABLE `movies`;
 
+# A director can direct many movies but a movie will have a single director. One To Many
 
 CREATE TABLE IF NOT EXISTS `directors` (
 	`id` INT AUTO_INCREMENT,
     `first_name` VARCHAR(255) NOT NULL,
     `last_name` VARCHAR(255),
     `date_of_birth` DATE NOT NULL,
+    `image_link` TEXT NOT NULL,
      PRIMARY KEY (`id`)
 );
 
@@ -28,18 +30,11 @@ CREATE TABLE IF NOT EXISTS `movies` (
     `original_language` ENUM('english', 'hindi', 'urdu', 'tamil', 'korean') NOT NULL DEFAULT 'english',
     `budget` DECIMAL(15, 2) NOT NULL,
     `revenue` DECIMAL(15, 2) NOT NULL,
+    `director_id` INT NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+     FOREIGN KEY (`director_id`) REFERENCES directors(`id`),
      PRIMARY KEY (`id`)
 );
-
-
-
-
-
-
-ALTER TABLE `movies` ADD COLUMN `trailer_link` TEXT NOT NULL;
-
-
 
 INSERT INTO `movies` (title, synopsis, tagline, released_year, poster_path, duration, pg_rating, budget, revenue) 
 VALUES ("Zack Snyder's Justice League", 
