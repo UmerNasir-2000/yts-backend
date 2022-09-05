@@ -1,8 +1,22 @@
+# YTS CLONE SCRIPT
+# AUTHOR = M. Umer Nasir
+# DATE = 5th Sept, 2022
+
+DROP DATABASE IF EXISTS `sql_yts`;
 CREATE DATABASE IF NOT EXISTS `sql_yts`;
 
 USE `sql_yts`;
 
-DROP TABLE `movies`;
+DROP TABLE IF EXISTS `movies`;
+DROP TABLE IF EXISTS `artists`;
+DROP TABLE IF EXISTS `genres`;
+DROP TABLE IF EXISTS `torrents`;
+DROP TABLE IF EXISTS `movies_genres_mapping`;
+DROP TABLE IF EXISTS `movies_artists_mapping`;
+DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `users_favourites`;
+DROP TABLE IF EXISTS `requests`;
+DROP TABLE IF EXISTS `public_logs`;
 
 # A director can direct many movies but a movie will have a single director. One To Many
 
@@ -62,42 +76,69 @@ CREATE TABLE IF NOT EXISTS `torrents` (
     `type` ENUM('cam', 'web', 'bluray') NOT NULL,
     `movie_id` INT NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`movie_id`) REFERENCES movies(`id`),
-    PRIMARY KEY (`id`)
-)
+     FOREIGN KEY (`movie_id`) REFERENCES movies(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     PRIMARY KEY (`id`)
+);
 
 CREATE TABLE IF NOT EXISTS `movies_genres_mapping` (
     `movie_id` INT NOT NULL,
     `genre_id` INT NOT NULL,
-    FOREIGN KEY (`movie_id`) REFERENCES movies(`id`),
-    FOREIGN KEY (`genre_id`) REFERENCES genres(`id`),
-	PRIMARY KEY (`movie_id`, `genre_id`)
+     FOREIGN KEY (`movie_id`) REFERENCES movies(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     FOREIGN KEY (`genre_id`) REFERENCES genres(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+	 PRIMARY KEY (`movie_id`, `genre_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `movies_artists_mapping` (
     `id` INT AUTO_INCREMENT,
-    `movie_id` INT NOT NULL,
-    `artist_id` INT NOT NULL,
     `character_name` VARCHAR(50) NOT NULL,
     `is_leading` BOOLEAN DEFAULT true,
-    FOREIGN KEY (`movie_id`) REFERENCES movies(`id`),
-    FOREIGN KEY (`artist_id`) REFERENCES artists(`id`),
-	PRIMARY KEY (`id`),
-    UNIQUE KEY `movie_artist_character_index` (`movie_id`, `artist_id`, `character_name`)
+    `movie_id` INT NOT NULL,
+    `artist_id` INT NOT NULL,
+     FOREIGN KEY (`movie_id`) REFERENCES movies(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     FOREIGN KEY (`artist_id`) REFERENCES artists(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+	 PRIMARY KEY (`id`),
+     UNIQUE KEY `movie_artist_character_index` (`movie_id`, `artist_id`, `character_name`)
 );
 
-INSERT INTO `movies` (title, synopsis, tagline, released_year, poster_path, duration, pg_rating, budget, revenue) 
-VALUES ("Zack Snyder's Justice League", 
-"Determined to ensure Superman's ultimate sacrifice was not in vain, Bruce Wayne aligns forces with Diana Prince with plans to 
-recruit a team of metahumans to protect the world from an approaching threat of catastrophic proportions.",
-'Unite the Seven.',
-'2021',
-'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/tnAuB8q5vv7Ax9UAEje5Xi4BXik.jpg',
-242,
-'PG-18',
-70000000.00,
-657900000.00
+CREATE TABLE IF NOT EXISTS `users` (
+    `id` INT AUTO_INCREMENT,
+    `first_name` VARCHAR(50) NOT NULL,
+    `last_name` VARCHAR(50),
+    `email` VARCHAR(255) NOT NULL UNIQUE,
+    `password` TEXT NOT NULL,
+    `gender` ENUM('male', 'female', 'not-specified') NOT NULL DEFAULT 'not-specified',
+    `nationality` VARCHAR(50),
+    `status` ENUM('enable', 'disable', 'register') NOT NULL DEFAULT 'register',
+     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `users_favourites` (
+    `id` INT AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `movie_id` INT NOT NULL,
+    `is_notified` boolean default false,
+     FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     FOREIGN KEY (`movie_id`) REFERENCES movies(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     PRIMARY KEY (`id`)
+);
 
-SELECT * FROM movies;
+# A USER CAN MAKE MULTIPLE REQUESTS
+
+CREATE TABLE IF NOT EXISTS `requests` (
+    `id` INT AUTO_INCREMENT,
+    `movie_title` VARCHAR(255) NOT NULL,
+    `movie_description` TEXT,
+    `status` ENUM('initiate', 'in-process', 'fulfill') DEFAULT 'initiate',
+    `user_id` INT NOT NULL,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+     FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `public_logs` (
+    `id` INT AUTO_INCREMENT,
+    `ip_address` CHAR(15) NOT NULL,
+    `request_method` ENUM('get', 'post', 'put', 'patch', 'delete') NOT NULL,
+    `request_endpoint` VARCHAR(50) NOT NULL,
+     PRIMARY KEY (`id`)
+);
