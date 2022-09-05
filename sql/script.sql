@@ -1,5 +1,18 @@
 CREATE DATABASE IF NOT EXISTS `sql_yts`;
 
+USE `sql_yts`;
+
+DROP TABLE `movies`;
+
+
+CREATE TABLE IF NOT EXISTS `directors` (
+	`id` INT AUTO_INCREMENT,
+    `first_name` VARCHAR(255) NOT NULL,
+    `last_name` VARCHAR(255),
+    `date_of_birth` DATE NOT NULL,
+     PRIMARY KEY (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `movies` (
 	`id` INT AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
@@ -9,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `movies` (
     `poster_path` TEXT NOT NULL,
     `trailer_link` TEXT NOT NULL,
     `duration` INT NOT NULL,
-    `film_industry` ENUM('hollywood', 'bollywood', 'lollywood', 'Tamil Nadu', 'Korean') NOT NULL DEFAULT 'hollywood',
+    `film_industry` ENUM('hollywood', 'bollywood', 'lollywood', 'tamil-nadu', 'korean') NOT NULL DEFAULT 'hollywood',
     `status` ENUM('upcoming', 'released', 'deleted', 'disabled') NOT NULL DEFAULT 'upcoming',
     `pg_rating` ENUM('PG-8', 'PG-12', 'PG-14', 'PG-16', 'PG-18') NOT NULL,
     `original_language` ENUM('english', 'hindi', 'urdu', 'tamil', 'korean') NOT NULL DEFAULT 'english',
@@ -18,6 +31,11 @@ CREATE TABLE IF NOT EXISTS `movies` (
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
      PRIMARY KEY (`id`)
 );
+
+
+
+
+
 
 ALTER TABLE `movies` ADD COLUMN `trailer_link` TEXT NOT NULL;
 

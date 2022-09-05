@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from './config/index'
+import { MoviesModule } from './modules/movies/movies.module';
 import { TypeOrmConfigService } from './services/database/database.service';
 
 
@@ -17,7 +18,8 @@ import { TypeOrmConfigService } from './services/database/database.service';
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService
-    })
+    }),
+    MoviesModule
   ],
   controllers: [AppController],
   providers: [AppService],
