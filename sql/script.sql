@@ -8,11 +8,20 @@ DROP TABLE `movies`;
 
 CREATE TABLE IF NOT EXISTS `directors` (
 	`id` INT AUTO_INCREMENT,
-    `first_name` VARCHAR(255) NOT NULL,
-    `last_name` VARCHAR(255),
+    `first_name` VARCHAR(50) NOT NULL,
+    `last_name` VARCHAR(50),
     `date_of_birth` DATE NOT NULL,
+    `bio` TEXT,
     `image_link` TEXT NOT NULL,
      PRIMARY KEY (`id`)
+);
+
+# A movie can have multiple genres. One To Many
+
+CREATE TABLE IF NOT EXISTS `genres` (
+	`id` INT AUTO_INCREMENT,
+    `name` ENUM('action', 'crime', 'adventure', 'fantasy', 'sci-fi', 'thriller', 'horror', 'romantic', 'drama') NOT NULL,
+	 PRIMARY KEY (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `movies` (
