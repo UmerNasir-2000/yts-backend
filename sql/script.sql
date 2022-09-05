@@ -61,7 +61,8 @@ CREATE TABLE IF NOT EXISTS `movies` (
     `director_id` INT NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
      FOREIGN KEY (`director_id`) REFERENCES artists(`id`),
-     PRIMARY KEY (`id`)
+     PRIMARY KEY (`id`),
+     UNIQUE KEY `title_year_index` (`title`, `released_year`)
 );
 
 # A movie can have multiple torrents. 
