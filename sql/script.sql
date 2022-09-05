@@ -6,17 +6,20 @@ DROP TABLE `movies`;
 
 # A director can direct many movies but a movie will have a single director. One To Many
 
-CREATE TABLE IF NOT EXISTS `directors` (
+CREATE TABLE IF NOT EXISTS `artists` (
 	`id` INT AUTO_INCREMENT,
     `first_name` VARCHAR(50) NOT NULL,
     `last_name` VARCHAR(50),
+    `gender` ENUM('male', 'female', 'not-specified') NOT NULL DEFAULT 'not-specified',
+    `nationality` VARCHAR(50),
+    `known_for` ENUM('actor', 'director', 'actor-director'),
     `date_of_birth` DATE NOT NULL,
     `bio` TEXT,
     `image_link` TEXT NOT NULL,
      PRIMARY KEY (`id`)
 );
 
-# A movie can have multiple genres. One To Many
+# A movie can have multiple genres and a genre can be associated with many movies. Many To Many
 
 CREATE TABLE IF NOT EXISTS `genres` (
 	`id` INT AUTO_INCREMENT,
@@ -31,7 +34,9 @@ CREATE TABLE IF NOT EXISTS `movies` (
     `tagline` VARCHAR(255) NOT NULL,
     `released_year` YEAR(4) NOT NULL,
     `poster_path` TEXT NOT NULL,
+    `backdrop_path` TEXT,
     `trailer_link` TEXT NOT NULL,
+    `subtitle_link` TEXT,
     `duration` INT NOT NULL,
     `film_industry` ENUM('hollywood', 'bollywood', 'lollywood', 'tamil-nadu', 'korean') NOT NULL DEFAULT 'hollywood',
     `status` ENUM('upcoming', 'released', 'deleted', 'disabled') NOT NULL DEFAULT 'upcoming',
@@ -41,8 +46,44 @@ CREATE TABLE IF NOT EXISTS `movies` (
     `revenue` DECIMAL(15, 2) NOT NULL,
     `director_id` INT NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-     FOREIGN KEY (`director_id`) REFERENCES directors(`id`),
+     FOREIGN KEY (`director_id`) REFERENCES artists(`id`),
      PRIMARY KEY (`id`)
+);
+
+# A movie can have multiple torrents. 
+
+CREATE TABLE IF NOT EXISTS `torrents` (
+	`id` INT AUTO_INCREMENT,
+    `quality` ENUM('480', '720', '1080', '2160', '3840') NOT NULL,
+    `path` TEXT NOT NULL,
+    `size` BIGINT NOT NULL,
+    `seeds` INT,
+    `peers` INT,
+    `type` ENUM('cam', 'web', 'bluray') NOT NULL,
+    `movie_id` INT NOT NULL,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`movie_id`) REFERENCES movies(`id`),
+    PRIMARY KEY (`id`)
+)
+
+CREATE TABLE IF NOT EXISTS `movies_genres_mapping` (
+    `movie_id` INT NOT NULL,
+    `genre_id` INT NOT NULL,
+    FOREIGN KEY (`movie_id`) REFERENCES movies(`id`),
+    FOREIGN KEY (`genre_id`) REFERENCES genres(`id`),
+	PRIMARY KEY (`movie_id`, `genre_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `movies_artists_mapping` (
+    `id` INT AUTO_INCREMENT,
+    `movie_id` INT NOT NULL,
+    `artist_id` INT NOT NULL,
+    `character_name` VARCHAR(50) NOT NULL,
+    `is_leading` BOOLEAN DEFAULT true,
+    FOREIGN KEY (`movie_id`) REFERENCES movies(`id`),
+    FOREIGN KEY (`artist_id`) REFERENCES artists(`id`),
+	PRIMARY KEY (`id`),
+    UNIQUE KEY `movie_artist_character_index` (`movie_id`, `artist_id`, `character_name`)
 );
 
 INSERT INTO `movies` (title, synopsis, tagline, released_year, poster_path, duration, pg_rating, budget, revenue) 
