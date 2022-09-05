@@ -9,12 +9,12 @@ USE `sql_yts`;
 
 -- TABLE CREATION SECTION
 
-DROP TABLE IF EXISTS `movies`;
+DROP TABLE IF EXISTS `cinematics`;
 DROP TABLE IF EXISTS `artists`;
 DROP TABLE IF EXISTS `genres`;
 DROP TABLE IF EXISTS `torrents`;
-DROP TABLE IF EXISTS `movies_genres_mapping`;
-DROP TABLE IF EXISTS `movies_artists_mapping`;
+DROP TABLE IF EXISTS `cinematics_genres_mapping`;
+DROP TABLE IF EXISTS `cinematics_artists_mapping`;
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `users_favourites`;
 DROP TABLE IF EXISTS `requests`;
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `genres` (
 	 PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `movies` (
+CREATE TABLE IF NOT EXISTS `cinematics` (
 	`id` INT AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
     `synopsis` TEXT NOT NULL,
@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `movies` (
     `subtitle_link` TEXT,
     `duration` INT NOT NULL,
     `film_industry` ENUM('hollywood', 'bollywood', 'lollywood', 'tamil-nadu', 'korean') NOT NULL DEFAULT 'hollywood',
+    `type` ENUM('movie', 'season') NOT NULL DEFAULT 'movie',
     `status` ENUM('upcoming', 'released', 'deleted', 'disabled') NOT NULL DEFAULT 'upcoming',
     `pg_rating` ENUM('PG-8', 'PG-12', 'PG-14', 'PG-16', 'PG-18') NOT NULL,
     `original_language` ENUM('english', 'hindi', 'urdu', 'tamil', 'korean') NOT NULL DEFAULT 'english',
@@ -77,30 +78,30 @@ CREATE TABLE IF NOT EXISTS `torrents` (
     `seeds` INT,
     `peers` INT,
     `type` ENUM('cam', 'web', 'bluray') NOT NULL,
-    `movie_id` INT NOT NULL,
+    `cinematic_id` INT NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-     FOREIGN KEY (`movie_id`) REFERENCES movies(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     FOREIGN KEY (`cinematic_id`) REFERENCES cinematics(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
      PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `movies_genres_mapping` (
-    `movie_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `cinematics_genres_mapping` (
+    `cinematic_id` INT NOT NULL,
     `genre_id` INT NOT NULL,
-     FOREIGN KEY (`movie_id`) REFERENCES movies(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     FOREIGN KEY (`cinematic_id`) REFERENCES cinematics(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
      FOREIGN KEY (`genre_id`) REFERENCES genres(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
-	 PRIMARY KEY (`movie_id`, `genre_id`)
+	 PRIMARY KEY (`cinematic_id`, `genre_id`)
 );
 
-CREATE TABLE IF NOT EXISTS `movies_artists_mapping` (
+CREATE TABLE IF NOT EXISTS `cinematics_artists_mapping` (
     `id` INT AUTO_INCREMENT,
     `character_name` VARCHAR(50) NOT NULL,
     `is_leading` BOOLEAN DEFAULT true,
-    `movie_id` INT NOT NULL,
+    `cinematic_id` INT NOT NULL,
     `artist_id` INT NOT NULL,
-     FOREIGN KEY (`movie_id`) REFERENCES movies(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     FOREIGN KEY (`cinematic_id`) REFERENCES cinematics(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
      FOREIGN KEY (`artist_id`) REFERENCES artists(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
 	 PRIMARY KEY (`id`),
-     UNIQUE KEY `movie_artist_character_index` (`movie_id`, `artist_id`, `character_name`)
+     UNIQUE KEY `cinematic_artist_character_index` (`cinematic_id`, `artist_id`, `character_name`)
 );
 
 CREATE TABLE IF NOT EXISTS `users` (
@@ -130,8 +131,8 @@ CREATE TABLE IF NOT EXISTS `users_favourites` (
 
 CREATE TABLE IF NOT EXISTS `requests` (
     `id` INT AUTO_INCREMENT,
-    `movie_title` VARCHAR(255) NOT NULL,
-    `movie_description` TEXT,
+    `cinematic_title` VARCHAR(255) NOT NULL,
+    `cinematic_description` TEXT,
     `status` ENUM('initiate', 'in-process', 'fulfill') DEFAULT 'initiate',
     `user_id` INT NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
