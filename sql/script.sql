@@ -155,3 +155,11 @@ INSERT INTO `genres`(`name`) VALUES ('action'), ('crime'), ('sci-fi'),
                                     ('adventure'), ('horror'), ('romantic'),
                                     ('drama'), ('animation'), ('thriller'),
                                     ('fantasy');
+
+-- INSERT ARTISTS
+
+
+INSERT INTO `artists`(`first_name`, `last_name`, `birth_year`, `image_link`) VALUES
+            ('John', 'Cena', 1977, 'john_cena.jpg'), ('Tom', 'Cruise', 1962, 'tom_cruise.jpg'),
+            ('Chris', 'Evans', 1981, 'chris_evans.jpg'), ('Margott', 'Robbie', 1990, 'margott_robbie.jpg'),
+            ('Chris', 'Hemsworth', 1983, 'chris_hemsworth.jpg'), ('Elizabeth', 'Olsen', 1989, 'elizabeth_olsen.jpg');
