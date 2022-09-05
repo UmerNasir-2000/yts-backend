@@ -7,6 +7,8 @@ CREATE DATABASE IF NOT EXISTS `sql_yts`;
 
 USE `sql_yts`;
 
+-- TABLE CREATION SECTION
+
 DROP TABLE IF EXISTS `movies`;
 DROP TABLE IF EXISTS `artists`;
 DROP TABLE IF EXISTS `genres`;
@@ -26,8 +28,8 @@ CREATE TABLE IF NOT EXISTS `artists` (
     `last_name` VARCHAR(50),
     `gender` ENUM('male', 'female', 'not-specified') NOT NULL DEFAULT 'not-specified',
     `nationality` VARCHAR(50),
-    `known_for` ENUM('actor', 'director', 'actor-director'),
-    `date_of_birth` DATE NOT NULL,
+    `known_for` ENUM('actor', 'director', 'actor-director') DEFAULT 'actor',
+    `birth_year` YEAR(4) NOT NULL,
     `bio` TEXT,
     `image_link` TEXT NOT NULL,
      PRIMARY KEY (`id`)
@@ -37,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `artists` (
 
 CREATE TABLE IF NOT EXISTS `genres` (
 	`id` INT AUTO_INCREMENT,
-    `name` ENUM('action', 'crime', 'adventure', 'fantasy', 'sci-fi', 'thriller', 'horror', 'romantic', 'drama') NOT NULL,
+    `name` ENUM('action', 'crime', 'adventure', 'fantasy', 'sci-fi', 'thriller', 'horror', 'romantic', 'drama', 'animation') NOT NULL,
 	 PRIMARY KEY (`id`)
 );
 
@@ -144,3 +146,12 @@ CREATE TABLE IF NOT EXISTS `public_logs` (
     `request_endpoint` VARCHAR(50) NOT NULL,
      PRIMARY KEY (`id`)
 );
+
+
+
+-- INSERT GENRES
+
+INSERT INTO `genres`(`name`) VALUES ('action'), ('crime'), ('sci-fi'),
+                                    ('adventure'), ('horror'), ('romantic'),
+                                    ('drama'), ('animation'), ('thriller'),
+                                    ('fantasy');
