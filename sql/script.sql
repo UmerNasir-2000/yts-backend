@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `users_favourites`;
 DROP TABLE IF EXISTS `requests`;
 DROP TABLE IF EXISTS `public_logs`;
+DROP TABLE IF EXISTS `download_details`;
 
 # A director can direct many movies but a movie will have a single director. One To Many
 
@@ -148,7 +149,17 @@ CREATE TABLE IF NOT EXISTS `public_logs` (
      PRIMARY KEY (`id`)
 );
 
-
+CREATE TABLE IF NOT EXISTS `download_details` (
+    `id` INT AUTO_INCREMENT,
+    `torrent_id` INT NOT NULL,    
+    `cinematic_id` INT NOT NULL,
+    `user_id` INT,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+     FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     FOREIGN KEY (`cinematic_id`) REFERENCES cinematics(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     FOREIGN KEY (`torrent_id`) REFERENCES torrents(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
+     PRIMARY KEY (`id`)
+);
 
 -- INSERT GENRES
 
