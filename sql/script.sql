@@ -1,5 +1,5 @@
 # YTS CLONE SCRIPT
-# AUTHOR = M. Umer Nasir
+# AUTHOR = M. Umer Nasir, M. Ahmed Khatri
 # DATE = 5th Sept, 2022
 
 DROP DATABASE IF EXISTS `sql_yts`;
@@ -108,17 +108,18 @@ CREATE TABLE IF NOT EXISTS `users` (
     `password` TEXT NOT NULL,
     `gender` ENUM('male', 'female', 'not-specified') NOT NULL DEFAULT 'not-specified',
     `nationality` VARCHAR(50),
+    `type` ENUM('admin', 'user') DEFAULT `user`,
     `status` ENUM('enable', 'disable', 'register') NOT NULL DEFAULT 'register',
      PRIMARY KEY (`id`)
 );
 
+# A User Can Favourite Only Coming Soon Movies.
+
 CREATE TABLE IF NOT EXISTS `users_favourites` (
     `id` INT AUTO_INCREMENT,
-    `user_id` INT NOT NULL,
-    `movie_id` INT NOT NULL,
     `is_notified` boolean default false,
+    `user_id` INT NOT NULL,
      FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
-     FOREIGN KEY (`movie_id`) REFERENCES movies(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
      PRIMARY KEY (`id`)
 );
 
