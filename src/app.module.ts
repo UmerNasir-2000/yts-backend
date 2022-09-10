@@ -3,10 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import configuration from './config/index'
-import { MoviesModule } from './modules/movies/movies.module';
+import configuration from './config/index';
+import { CinematicsModule } from './modules/cinematics/cinematics.module';
 import { TypeOrmConfigService } from './services/database/database.service';
-
 
 @Module({
   imports: [
@@ -14,12 +13,12 @@ import { TypeOrmConfigService } from './services/database/database.service';
       isGlobal: true,
       load: [configuration],
       expandVariables: true,
-      envFilePath: `envs/.${process.env.NODE_ENV}.env`
+      envFilePath: `envs/.${process.env.NODE_ENV}.env`,
     }),
     TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService
+      useClass: TypeOrmConfigService,
     }),
-    MoviesModule
+    CinematicsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `artists` (
      PRIMARY KEY (`id`)
 );
 
+
 # A movie can have multiple genres and a genre can be associated with many movies. Many To Many
 
 CREATE TABLE IF NOT EXISTS `genres` (
@@ -70,12 +71,19 @@ CREATE TABLE IF NOT EXISTS `cinematics` (
      UNIQUE KEY `title_year_index` (`title`, `released_year`)
 );
 
+INSERT INTO `cinematics` (`title`, `synopsis`, `tagline`, `released_year`, `poster_path`, `trailer_link`, 
+						   `duration`, `pg_rating`, `budget`, `revenue`, `director_id`)
+VALUES ('The Avengers', "When an unexpected enemy emerges and threatens global safety and security, Nick Fury, director of the international peacekeeping agency known as S.H.I.E.L.D., finds himself in need of a team to pull the world back from the brink of disaster. 
+Spanning the globe, a daring recruitment effort begins!", "Some assembly required", 2012, "the_avengers_2012.jpg", "the_avengers_2012", 143,
+"PG-12", 220000000.00, 1518815515.00, 15);
+
+
 CREATE TABLE IF NOT EXISTS `cinematics_images` (
     `id` INT AUTO_INCREMENT,
     `image_path` TEXT NOT NULL,
     `cinematic_id` INT NOT NULL,
      FOREIGN KEY (`cinematic_id`) REFERENCES cinematics(`id`),
-     PRIMARY KEY (`id`),
+     PRIMARY KEY (`id`)
 );
 
 # A movie can have multiple torrents. 
@@ -102,6 +110,8 @@ CREATE TABLE IF NOT EXISTS `cinematics_genres_mapping` (
 	 PRIMARY KEY (`cinematic_id`, `genre_id`)
 );
 
+INSERT INTO `cinematics_genres_mapping` (`cinematic_id`, `genre_id`) VALUES (1, 1), (1, 3), (1, 4);
+
 CREATE TABLE IF NOT EXISTS `cinematics_artists_mapping` (
     `id` INT AUTO_INCREMENT,
     `character_name` VARCHAR(50) NOT NULL,
@@ -122,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `password` TEXT NOT NULL,
     `gender` ENUM('male', 'female', 'not-specified') NOT NULL DEFAULT 'not-specified',
     `nationality` VARCHAR(50),
-    `type` ENUM('admin', 'user') DEFAULT `user`,
+    `type` ENUM('admin', 'user') DEFAULT 'user',
     `status` ENUM('enable', 'disable', 'register') NOT NULL DEFAULT 'register',
      PRIMARY KEY (`id`)
 );
@@ -181,6 +191,6 @@ INSERT INTO `genres`(`name`) VALUES ('action'), ('crime'), ('sci-fi'),
 
 
 INSERT INTO `artists`(`first_name`, `last_name`, `birth_year`, `image_link`) VALUES
-            ('John', 'Cena', 1977, 'john_cena.jpg'), ('Tom', 'Cruise', 1962, 'tom_cruise.jpg'),
-            ('Chris', 'Evans', 1981, 'chris_evans.jpg'), ('Margott', 'Robbie', 1990, 'margott_robbie.jpg'),
-            ('Chris', 'Hemsworth', 1983, 'chris_hemsworth.jpg'), ('Elizabeth', 'Olsen', 1989, 'elizabeth_olsen.jpg');
+            ('Christian', 'Bale', 1974, 'christian_bale.jpg'), ('Christopher', 'Nolan', 1970, 'christopher_nolan.jpg'),
+            ('Joss', 'Whedon', 1964, 'joss_whedon.jpg'), ('Zack', 'Snyder', 1966 , 'zack_snyder.jpg'),
+            ('Anthony', 'Russo', 1970, 'anthony_russo.jpg'), ('James', 'Gunn', 1966, 'james_gunn.jpg');
