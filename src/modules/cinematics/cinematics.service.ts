@@ -6,7 +6,7 @@ import { Cinematic } from './cinematics.entity';
 @Injectable()
 export class CinematicsService {
 
-    constructor(@InjectRepository(Cinematic) private readonly cinematicRepository: Repository<Cinematic>) {}
+    constructor(@InjectRepository(Cinematic) private readonly cinematicRepository: Repository<Cinematic>) { }
 
     async fetchMovies() : Promise<Cinematic[]>{ 
 

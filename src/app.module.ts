@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from './config/index';
 import { CinematicsModule } from './modules/cinematics/cinematics.module';
+import { GenresModule } from './modules/genres/genres.module';
 import { TypeOrmConfigService } from './services/database/database.service';
 
 @Module({
@@ -19,8 +20,9 @@ import { TypeOrmConfigService } from './services/database/database.service';
       useClass: TypeOrmConfigService,
     }),
     CinematicsModule,
+    GenresModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
