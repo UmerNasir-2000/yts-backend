@@ -1,39 +1,4 @@
 {
-    "totalPages": 100,
-    "totalMovies": 156000,
-    "movies": [
-        {
-            "id": 1542,
-            "title": "Now You See Me",
-            "slug": "now-you-see-me-2014",
-            "synopsis": "Four street magicians, Daniel, Merritt, Henley and Jack, ransack a huge amount of money belonging to insurance baron Arthur Tressler while being chased by police officers.",
-            "releasedYear": "2013",
-            "genres": ["Suspense", "Thriller", "Adventure"],
-            "director": { 
-                "id": 762,
-                "name": "Joss Whedon",
-                "profileLink": "https://api-yts-clone/api/v1/artists/director/762"
-            },
-            "leadActors": [
-                {
-                    "id": 6132,
-                    "name": "Morgan Freeman",
-                    "character": "Thaddeus Boogman",
-                    "image": "https://cloudinary-host/artists/morgan-freeman.jpg"
-                },
-                {
-                    "id": 6132,
-                    "name": "Morgan Freeman",
-                    "character": "Thaddeus Boogman",
-                    "image": "https://cloudinary-host/artists/morgan-freeman.jpg"
-                },
-                {
-                    "id": 6132,
-                    "name": "Morgan Freeman",
-                    "character": "Thaddeus Boogman",
-                    "image": "https://cloudinary-host/artists/morgan-freeman.jpg"
-                }
-            ]
-        }
-    ]
+    "pageNumber": 1,
+    "pageSize": 20
 }

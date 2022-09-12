@@ -1,0 +1,29 @@
+{
+    "hasNext": true,
+    "hasPrevious": false,
+    "totalMovies": 1902,
+    "totalPages": 190,
+    "movies": [
+        {
+            "movieId": 1,
+            "title": "Avengers",
+            "poster": "https://google.com/",
+            "genres": ["Action", "Sci Fi"],
+            "releasedYear": 2019
+        },
+        {
+            "movieId": 1,
+            "title": "Avengers",
+            "poster": "https://google.com/",
+            "genres": ["Action", "Sci Fi"],
+            "releasedYear": 2019
+        },      
+        {
+            "movieId": 1,
+            "title": "Avengers",
+            "poster": "https://google.com/",
+            "genres": ["Action", "Sci Fi"],
+            "releasedYear": 2019
+        }
+    ]
+}
