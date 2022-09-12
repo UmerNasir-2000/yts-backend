@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from './config/index';
+import { CinematicGenresModule } from './modules/cinematic-genres/cinematic-genres.module';
 import { CinematicsModule } from './modules/cinematics/cinematics.module';
 import { GenresModule } from './modules/genres/genres.module';
 import { TypeOrmConfigService } from './services/database/database.service';
@@ -20,7 +21,8 @@ import { TypeOrmConfigService } from './services/database/database.service';
       useClass: TypeOrmConfigService,
     }),
     CinematicsModule,
-    GenresModule
+    GenresModule,
+    CinematicGenresModule
   ],
   controllers: [AppController],
   providers: [AppService],
