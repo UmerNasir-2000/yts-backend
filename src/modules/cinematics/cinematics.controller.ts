@@ -10,7 +10,7 @@ export class CinematicsController {
   @Get('movies/browse')
   fetchMovies(@Body() body: FetchMoviesRequestDTO) { 
     
-    return this.cinematicsService.fetchMovies();
+    return this.cinematicsService.fetchMovies(body);
     
   }
 

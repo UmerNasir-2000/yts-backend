@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
+import { Cinematic } from '../cinematics/cinematics.entity';
 
 export enum GenreTitle {
 
@@ -22,5 +23,16 @@ export class Genre {
 
     @Column({ name: 'name', type: 'enum', enum: GenreTitle })
     title: GenreTitle;
+
+    @ManyToMany(() => Cinematic, (cinematics) => cinematics.genres)
+    @JoinTable({ name: 'cinematics_genres_mapping', joinColumn: {
+        name: 'genre_id',
+        referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+        name: 'cinematic_id'
+    }
+    })
+    cinematics: Cinematic[];
 
 }

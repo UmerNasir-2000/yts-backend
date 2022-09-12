@@ -1,13 +1,14 @@
-
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, PrimaryColumn, JoinColumn } from 'typeorm';
 
 @Entity({ name: 'cinematics_genres_mapping' })
 export class CinematicGenre {
 
-    @Column({ name: 'cinematic_id' })
+    @PrimaryColumn({ name: 'cinematic_id' })
+    // @JoinColumn({ name: 'cinematic_id' })
     cinematicId: number;
 
-    @Column({ name: 'genre_id' })
+    @PrimaryColumn({ name: 'genre_id' })
+    // @JoinColumn({ name: 'genre_id' })
     genreId: number;
 
 }

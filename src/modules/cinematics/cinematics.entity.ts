@@ -1,4 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { Genre } from '../genres/genres.entity';
+
+export enum CinematicStatus { 
+
+  RELEASED = "released",
+  UPCOMING = "upcoming",
+  DISABLED = "disabled",
+  DELETED = "deleted",
+
+}
+
+
+export enum CinematicType { 
+
+  MOVIE = "movie",
+  SERIES = "series"
+
+}
 
 @Entity({ name: 'cinematics' })
 export class Cinematic {
@@ -11,5 +29,20 @@ export class Cinematic {
 
   @Column('text')
   synopsis: string;
+
+  @Column({ name: 'poster_path', type: 'text' })
+  poster: string;
+
+  @Column({ name: 'released_year', type: 'year' })
+  releasedYear: Date;
+
+  @Column({ type: 'enum', enum: CinematicStatus, default: CinematicStatus.RELEASED })
+  status: CinematicStatus;
+
+  @Column({ type: 'enum', enum: CinematicType, default: CinematicType.MOVIE })
+  type: CinematicType;
+
+  @ManyToMany(() => Genre, (genres) => genres.cinematics)
+  genres: Genre[];
   
 }
