@@ -9,6 +9,7 @@ export class GenreDTO {
     id: number;
 
     @Expose()
+    @Transform(({ value }) => value.toUpperCase())
     title: string;
 
 }
@@ -30,6 +31,7 @@ export class MoviesPaginationDTO {
 
     @Expose()
     @Type(() => GenreDTO)
+    @Transform(({ value }) => value.slice(0, 2))
     genres: GenreDTO[];
 
 }
