@@ -1,7 +1,19 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
+import { BANNERS_MOVIES } from 'src/utilities/constants';
+
 
 @Exclude()
-export class MoviesPagination { 
+export class GenreDTO { 
+
+    @Expose()
+    id: number;
+
+    @Expose()
+    title: string;
+
+}
+@Exclude()
+export class MoviesPaginationDTO { 
 
     @Expose()
     id: number;
@@ -10,13 +22,15 @@ export class MoviesPagination {
     title: string;
 
     @Expose()
+    @Transform(({ value }) => `${BANNERS_MOVIES}${value}`)
     poster: string;
 
     @Expose()
-    genres: string[];
+    releasedYear: number;
 
     @Expose()
-    releasedYear: number;
+    @Type(() => GenreDTO)
+    genres: GenreDTO[];
 
 }
 
@@ -36,7 +50,7 @@ export class FetchMoviesResponseDTO {
     totalPages: number;
 
     @Expose()
-    @Type(() => MoviesPagination)
-    movies: MoviesPagination[];
+    @Type(() => MoviesPaginationDTO)
+    movies: MoviesPaginationDTO[];
 
 }

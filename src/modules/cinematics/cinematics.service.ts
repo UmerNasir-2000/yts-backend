@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
 import { Cinematic, CinematicStatus, CinematicType } from './cinematics.entity';
 import { FetchMoviesRequestDTO } from './mappings/fetch-movies/fetch-movies.request.dto';
-import { FetchMoviesResponseDTO } from './mappings/fetch-movies/fetch-movies.response.dto';
+import { FetchMoviesResponseDTO, MoviesPaginationDTO } from './mappings/fetch-movies/fetch-movies.response.dto';
 
 @Injectable()
 export class CinematicsService {
@@ -28,14 +29,19 @@ export class CinematicsService {
                                                     where: {
                                                         type: CinematicType.MOVIE,
                                                         status: CinematicStatus.RELEASED
-                                                    }
+                                                    },
+                                                    skip: ( pageNumber - 1 ) * pageSize,
+                                                    take: pageSize
         });
 
-        console.log('totalMovies', totalPages);
-
-        console.log('movies', movies);
+        const response = new FetchMoviesResponseDTO();
+        response.hasPrevious = pageNumber !== 1;
+        response.hasNext = pageNumber !== totalPages;
+        response.totalMovies = moviesCount;
+        response.totalPages = totalPages;
+        response.movies = plainToInstance(MoviesPaginationDTO, movies);
         
-        return null;
+        return response;
 
     }
 
