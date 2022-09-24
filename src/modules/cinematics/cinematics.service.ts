@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
+import { PaginationResponseDTO } from 'src/utilities/mappings/pagination/pagination.response.dto';
 import { Repository } from 'typeorm';
 import { Cinematic, CinematicStatus, CinematicType } from './cinematics.entity';
 import { FetchMoviesRequestDTO } from './mappings/fetch-movies/fetch-movies.request.dto';
@@ -11,7 +12,7 @@ export class CinematicsService {
 
     constructor(@InjectRepository(Cinematic) private readonly cinematicRepository: Repository<Cinematic>) { }
 
-    async fetchMovies({ pageSize, pageNumber }: FetchMoviesRequestDTO): Promise<FetchMoviesResponseDTO> { 
+    async fetchMovies({ pageSize, pageNumber }: FetchMoviesRequestDTO): Promise<PaginationResponseDTO<MoviesPaginationDTO>> { 
 
         const moviesCount = await this.cinematicRepository.count({
                                                     where: {
@@ -20,9 +21,9 @@ export class CinematicsService {
                                                     }
         });
 
-        if(moviesCount < pageSize) throw new HttpException({ message: 'Page size cannot be greater than total number of movies.' }, HttpStatus.BAD_REQUEST);
-
         const totalPages = Math.ceil( moviesCount / pageSize );
+
+        if(totalPages < pageNumber) throw new HttpException({ message: 'Page number cannot be greater than total number of movies.' }, HttpStatus.BAD_REQUEST);
 
         const movies = await this.cinematicRepository.find({
                                                     relations: ['genres'],
@@ -34,12 +35,17 @@ export class CinematicsService {
                                                     take: pageSize
         });
 
-        const response = new FetchMoviesResponseDTO();
+        const response = new PaginationResponseDTO<MoviesPaginationDTO>();
+
         response.hasPrevious = pageNumber !== 1;
         response.hasNext = pageNumber !== totalPages;
-        response.totalMovies = moviesCount;
-        response.totalPages = totalPages;
-        response.movies = plainToInstance(MoviesPaginationDTO, movies);
+
+        response.pages = totalPages;
+        response.records = moviesCount;
+
+        const transformedMovies = plainToInstance(MoviesPaginationDTO, movies);
+
+        response.data = transformedMovies;
         
         return response;
 

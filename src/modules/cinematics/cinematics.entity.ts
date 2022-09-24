@@ -10,7 +10,6 @@ export enum CinematicStatus {
 
 }
 
-
 export enum CinematicType { 
 
   MOVIE = "movie",
@@ -29,6 +28,9 @@ export class Cinematic {
 
   @Column('text')
   synopsis: string;
+
+  @Column({ name: 'imdb_code' })
+  code: string;
 
   @Column({ name: 'poster_path', type: 'text' })
   poster: string;

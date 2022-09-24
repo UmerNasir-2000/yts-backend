@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `cinematics` (
     `released_year` YEAR(4) NOT NULL,
     `poster_path` TEXT NOT NULL,
     `backdrop_path` TEXT,
+    `imdb_code` VARCHAR(15) NOT NULL,
     `trailer_link` TEXT NOT NULL,
     `subtitle_link` TEXT,
     `duration` INT NOT NULL,
@@ -71,6 +72,13 @@ CREATE TABLE IF NOT EXISTS `cinematics` (
      UNIQUE KEY `title_year_index` (`title`, `released_year`)
 );
 
+INSERT INTO `cinematics` (`title`, `synopsis`, `tagline`, `released_year`, `poster_path`, `trailer_link`, 
+						   `duration`, `pg_rating`, `budget`, `revenue`, `director_id`)
+VALUES ('The Avengers', "When an unexpected enemy emerges and threatens global safety and security, Nick Fury, director of the international peacekeeping agency known as S.H.I.E.L.D., finds himself in need of a team to pull the world back from the brink of disaster. 
+Spanning the globe, a daring recruitment effort begins!", "Some assembly required", 2012, "the_avengers_2012.jpg", "the_avengers_2012", 143,
+"PG-12", 220000000.00, 1518815515.00, 15);
+
+
 CREATE TABLE IF NOT EXISTS `cinematics_images` (
     `id` INT AUTO_INCREMENT,
     `image_path` TEXT NOT NULL,
@@ -79,13 +87,15 @@ CREATE TABLE IF NOT EXISTS `cinematics_images` (
      PRIMARY KEY (`id`)
 );
 
+
+
 # A movie can have multiple torrents. 
 
 CREATE TABLE IF NOT EXISTS `torrents` (
 	`id` INT AUTO_INCREMENT,
     `quality` ENUM('480', '720', '1080', '2160', '3840') NOT NULL,
     `path` TEXT NOT NULL,
-    `size` BIGINT,
+    `size` BIGINT NOT NULL,
     `seeds` INT,
     `peers` INT,
     `type` ENUM('cam', 'web', 'bluray') NOT NULL,
@@ -116,6 +126,9 @@ CREATE TABLE IF NOT EXISTS `cinematics_artists_mapping` (
 	 PRIMARY KEY (`id`),
      UNIQUE KEY `cinematic_artist_character_index` (`cinematic_id`, `artist_id`, `character_name`)
 );
+
+INSERT INTO `cinematics_artists_mapping` (`character_name`, `is_leading`, `cinematic_id`, `artist_id`) 
+VALUES ('Thor Odinson', true, 1, 5), ('Natasha Romanoff | Black Widow', true, 1, 10), ('Tony Stark | Iron Man', true, 1, 7);
 
 CREATE TABLE IF NOT EXISTS `users` (
     `id` INT AUTO_INCREMENT,
@@ -172,3 +185,18 @@ CREATE TABLE IF NOT EXISTS `download_details` (
      FOREIGN KEY (`torrent_id`) REFERENCES torrents(`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
      PRIMARY KEY (`id`)
 );
+
+-- INSERT GENRES
+
+INSERT INTO `genres`(`name`) VALUES ('action'), ('crime'), ('sci-fi'),
+                                    ('adventure'), ('horror'), ('romantic'),
+                                    ('drama'), ('animation'), ('thriller'),
+                                    ('fantasy');
+
+-- INSERT ARTISTS
+
+
+INSERT INTO `artists`(`first_name`, `last_name`, `birth_year`, `image_link`) VALUES
+            ('Christian', 'Bale', 1974, 'christian_bale.jpg'), ('Christopher', 'Nolan', 1970, 'christopher_nolan.jpg'),
+            ('Joss', 'Whedon', 1964, 'joss_whedon.jpg'), ('Zack', 'Snyder', 1966 , 'zack_snyder.jpg'),
+            ('Anthony', 'Russo', 1970, 'anthony_russo.jpg'), ('James', 'Gunn', 1966, 'james_gunn.jpg');

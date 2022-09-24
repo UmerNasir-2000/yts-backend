@@ -40,18 +40,6 @@ export class MoviesPaginationDTO {
 export class FetchMoviesResponseDTO { 
 
     @Expose()
-    hasPrevious: boolean;
-
-    @Expose()
-    hasNext: boolean;
-
-    @Expose()
-    totalMovies: number;
-    
-    @Expose()
-    totalPages: number;
-
-    @Expose()
     @Type(() => MoviesPaginationDTO)
     movies: MoviesPaginationDTO[];
 
