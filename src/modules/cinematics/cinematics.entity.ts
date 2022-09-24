@@ -32,6 +32,12 @@ export class Cinematic {
   @Column({ name: 'imdb_code' })
   code: string;
 
+  @Column({ name: 'imdb_rating' })
+  imdb: number;
+
+  @Column({ name: 'rt_score' })
+  rottenTomatoes: number;
+
   @Column({ name: 'poster_path', type: 'text' })
   poster: string;
 

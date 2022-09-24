@@ -27,6 +27,10 @@ export class MoviesPaginationDTO {
     poster: string;
 
     @Expose()
+    @Transform(({ value }) => prepareRating(value))
+    imdb: number;
+
+    @Expose()
     releasedYear: number;
 
     @Expose()
@@ -42,5 +46,11 @@ export class FetchMoviesResponseDTO {
     @Expose()
     @Type(() => MoviesPaginationDTO)
     movies: MoviesPaginationDTO[];
+
+}
+
+function prepareRating (rating: number) { 
+
+    return rating ? rating : undefined;
 
 }

@@ -12,6 +12,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     const connectionOptions: TypeOrmModuleOptions = {
 
         type: 'mysql',
+        extra: { decimalNumbers: true },
         host: this.configService.get<string>('database.host'),
         port: this.configService.get<number>('database.port'),
         username: this.configService.get<string>('database.user'),
